@@ -35,7 +35,7 @@ xmlstarlet ed \
 uvt-kvm create \
     --template $TEMPLATE \
     --package avahi-daemon \
-    --run-script-once bootstrap.sh \
+    --run-script-once `dirname $0`/bootstrap.sh \
     $DOMAIN_NAME release=$RELEASE
 
 # wait for it to finish
