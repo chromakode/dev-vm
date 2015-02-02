@@ -3,12 +3,9 @@
 # `ubuntu` this is the default on the ubuntu cloud images
 USER=ubuntu
 
-# the directory we will mount the passthrough filesystem
-SRC=/home/$USER/src
-
 # ensure it exists and has the correct permissions
-mkdir -p $SRC
-chown ubuntu:ubuntu $SRC
+mkdir /mnt/shared-host /mnt/shared-local /mnt/shared
+chown ubuntu:ubuntu /mnt/shared-local /mnt/shared
 
 # add 9p to initrd so mountall can mount these filesystems early on during boot
 cat <<END >> /etc/initramfs-tools/modules
@@ -20,10 +17,10 @@ update-initramfs -u
 
 # set up the fstab entries for the passthrough and overlay filesystems
 cat <<END >> /etc/fstab
-src-passthrough /usr/local/src 9p ro,trans=virtio,version=9p2000.L 0 0
-overlayfs $SRC overlayfs lowerdir=/usr/local/src,upperdir=$SRC 0 0
+src-passthrough /mnt/shared-host 9p ro,trans=virtio,version=9p2000.L 0 0
+overlayfs /mnt/shared overlayfs lowerdir=/mnt/shared-host,upperdir=/mnt/shared-local 0 0
 END
 
 # mount them right now
-mount /usr/local/src
-mount $SRC
+mount /mnt/shared-host
+mount /mnt/shared
