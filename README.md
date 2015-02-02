@@ -26,14 +26,16 @@ Download appropriate cloud images. Example:
 The script is designed to work with Ubuntu Cloud Images that have a default
 user of `ubuntu`.
 
-The passthrough filesystem it configures will map `/home/$USER/src` on your
+`USAGE: ./create-dev-vm.sh RELEASE NAME PASSTHROUGH_DIR`
+
+The passthrough filesystem it configures will map PASSTHROUGH_DIR on your
 host OS read-only to `/usr/local/src` in the guest.  The guest will then use
 overlayfs to put a read-write overlay in `/home/ubuntu/src` allowing build
 artifacts etc to live in the vm.
 
 To create a VM, specify the release and the name of the domain:
 
-    ./create-dev-vm.sh precise testvm
+    ./create-dev-vm.sh precise testvm ~/passthrough_dir
 
 Once that's done, you can log in with SSH
 

@@ -2,9 +2,10 @@
 
 RELEASE=$1
 DOMAIN_NAME=$2
+PASSTHROUGH_DIR=$3
 
-if [[ "x$RELEASE" = "x" || "x$DOMAIN_NAME" = "x" ]]; then
-    echo "USAGE: $0 RELEASE NAME"
+if [[ "x$RELEASE" = "x" || "x$DOMAIN_NAME" = "x" || "x$PASSTHROUGH_DIR" = "x" ]]; then
+    echo "USAGE: $0 RELEASE NAME PASSTHROUGH_DIR"
     exit 1
 fi
 
@@ -23,7 +24,7 @@ xmlstarlet ed \
     -i '//passthrough-filesystem' -t 'attr' -n 'type' -v 'mount' \
     -i '//passthrough-filesystem' -t 'attr' -n 'accessmode' -v 'squash' \
     -s '//passthrough-filesystem' -t 'elem' -n 'source' \
-    -i '//passthrough-filesystem/source' -t 'attr' -n 'dir' -v "/home/$USER/src" \
+    -i '//passthrough-filesystem/source' -t 'attr' -n 'dir' -v "$PASSTHROUGH_DIR" \
     -s '//passthrough-filesystem' -t 'elem' -n 'target' \
     -i '//passthrough-filesystem/target' -t 'attr' -n 'dir' -v 'src-passthrough' \
     -s '//passthrough-filesystem' -t 'elem' -n 'readonly' \
